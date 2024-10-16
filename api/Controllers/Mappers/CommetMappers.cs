@@ -27,10 +27,13 @@ namespace api.Controllers.Mappers
             };
         }
 
+// Transforma el DTO (CreateUpdateComentRequestDto) en una entidad Comments, que es lo que 
+// probablemente necesitas para guardarlo o actualizarlo en la base de datos.
+// Usa el id del área (o comentario) que se pasó como parámetro desde la ruta.
 
-        public static CommentDto ToCommentFromCreate(this CreateComentRequestDto commentModel, int areaId)
+        public static Comments ToCommentFromCreate(this CreateUpdateComentRequestDto commentModel, int areaId)
         {
-            return new CommentDto
+            return new Comments
             {
    
                 Titulo = commentModel.Titulo,
@@ -41,6 +44,8 @@ namespace api.Controllers.Mappers
 
             };
         }
+
+
     }
 } 
 

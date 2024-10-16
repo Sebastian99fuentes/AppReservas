@@ -29,7 +29,8 @@ namespace api.Controllers
         {
             // está recuperando una lista de todas las áreas desde la base de datos
             // (_context.Area.ToList()) y luego transforma cada objeto de tipo Area en su correspondiente DTO
-            // (AreaDto) usando el método ToAreaDto(). El resultado final es una colección de objetos AreaDto.
+            // (AreaDto) usando el método ToAreaDto(). El resultado final es una colección de objetos AreaDto. 
+
             var areas = await _areaRepository.GetAllAsync();
 
             // var areasdt = areas.Select(a => a);
@@ -37,7 +38,7 @@ namespace api.Controllers
             return Ok(areas);
         }
 
-         [HttpGet("{id}")]
+         [HttpGet("{id:int}")]
          public async Task<IActionResult> GetById([FromRoute] int id)
          {
             var area = await _areaRepository.GetByIdAsync(id);
@@ -53,15 +54,25 @@ namespace api.Controllers
          [HttpPost]
          public  async Task<IActionResult> Create ([FromBody] CreateAreaRequestDto AreaDto)
          {
+            
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+             
+
                 var areaModel = AreaDto.ToAreaFromCreateDto();
                 await _areaRepository.CreateAsync(areaModel);
                 return CreatedAtAction(nameof(GetById), new{ id = areaModel.Id}, areaModel.ToAreaDto());
          }
 
          [HttpPut]
-         [Route("{id}")]
+         [Route("{id:int}")]
            public  async Task<IActionResult> Update ([FromRoute] int id, [FromBody] CreateAreaRequestDto Area)
          {
+
+            
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+             
                var areaModel = await _areaRepository.UpdateAsync(id,Area );
 
                if(areaModel == null)
@@ -74,7 +85,7 @@ namespace api.Controllers
          }
 
           [HttpDelete]
-         [Route("{id}")]
+         [Route("{id:int}")]
          public async Task<IActionResult> Delete ([FromRoute] int id)
          {
             var area = await _areaRepository.DeleteAsync(id);

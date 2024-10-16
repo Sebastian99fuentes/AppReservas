@@ -34,7 +34,7 @@ namespace api.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var comments = await _commentRepository.GetByIdAsync(id);
@@ -48,9 +48,12 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("{AreaId}")]
-        public async Task<IActionResult> Create([FromRoute] int AreaId, CreateComentRequestDto comenDto)
+        [HttpPost("{AreaId:int}")]
+        public async Task<IActionResult> Create([FromRoute] int AreaId, CreateUpdateComentRequestDto comenDto)
         {
+            
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             if(!await _IAreaRepository.Exist(AreaId))
             {
@@ -61,7 +64,44 @@ namespace api.Controllers
 
             await _commentRepository.CreateAsync(commentModel);
 
-            return CreatedAtAction(nameof(GetById), new{ id = commentModel});
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+        }
+
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateUpdateComentRequestDto ComenDto )
+        {
+            
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+             
+             
+            var comment = await _commentRepository.UpdateAsync(id, ComenDto.ToCommentFromCreate(id));
+
+            if(comment == null)
+            {
+                return NotFound("Comment not found");
+            }
+
+            return Ok(comment.ToCommentDto());
+        }
+
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delette([FromRoute] int id)
+        { 
+
+            var commentModel = await _commentRepository.DeleteAsync(id);
+
+            if(commentModel == null)
+            {
+                return NotFound("Comment does not exist");
+            }
+
+            return Ok();
+
         }
 
     }

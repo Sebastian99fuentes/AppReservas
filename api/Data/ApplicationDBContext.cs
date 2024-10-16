@@ -16,6 +16,20 @@ namespace api.Data
         }
         
         public DbSet<Area> Area {get; set; }
-        public DbSet<Comments> Comments {get; set; }
+        public DbSet<Comments> Comments {get; set; } 
+
+
+         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configuración para almacenar CreatedOn como UTC
+            modelBuilder.Entity<Comments>()
+                .Property(c => c.CreatedOn)
+                .HasConversion(
+                    v => v.ToUniversalTime(), // Almacena en UTC
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc) // Devuelve en UTC
+                );
+        }
     }
 }
