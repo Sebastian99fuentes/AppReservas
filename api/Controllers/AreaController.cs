@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Controllers.Dtos.Area;
+using api.Controllers.Helpers;
 using api.Controllers.Mappers;
 using api.Data;
 using api.Interfaces;
@@ -25,13 +26,13 @@ namespace api.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll( [FromQuery] QueryObject query)
         {
             // está recuperando una lista de todas las áreas desde la base de datos
             // (_context.Area.ToList()) y luego transforma cada objeto de tipo Area en su correspondiente DTO
             // (AreaDto) usando el método ToAreaDto(). El resultado final es una colección de objetos AreaDto. 
 
-            var areas = await _areaRepository.GetAllAsync();
+            var areas = await _areaRepository.GetAllAsync(query);
 
             // var areasdt = areas.Select(a => a);
                 

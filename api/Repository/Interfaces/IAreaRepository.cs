@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Controllers.Dtos.Area;
+using api.Controllers.Helpers;
 using api.Models;
 
 namespace api.Interfaces
@@ -10,7 +11,7 @@ namespace api.Interfaces
     public interface IAreaRepository
     {
         
-            Task<List<Area>> GetAllAsync();
+            Task<List<Area>> GetAllAsync(QueryObject query);
 
              Task<Area?> GetByIdAsync(int id);  ///first or default cant be null
 

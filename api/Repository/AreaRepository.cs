@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Controllers.Dtos.Area;
+using api.Controllers.Helpers;
 using api.Data;
 using api.Interfaces;
 using api.Models;
@@ -19,9 +20,27 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<Area>> GetAllAsync()
+        public async Task<List<Area>> GetAllAsync(QueryObject query)
         {
-            return  await _context.Area.Include(c=>c.Comments).ToListAsync();
+            var areas =   _context.Area.Include(c=>c.Comments).AsQueryable(); 
+            
+            if(!string.IsNullOrWhiteSpace(query.AreaNombre))
+            {
+                areas = areas.Where( a => a.Nombre.Contains(query.AreaNombre));
+            } 
+
+            if(!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if(query.SortBy.Equals("AreaNombre", StringComparison.OrdinalIgnoreCase))
+                {
+                    areas = query.IsDecsending ? areas.OrderByDescending(a => a.Nombre) : areas.OrderBy( a=> a.Nombre);
+                }
+            } 
+//  Este código es un patrón común para implementar paginación eficiente usando LINQ con Entity Framework.
+//  El uso de Skip y Take permite extraer solo los elementos necesarios por página, reduciendo la carga y mejorando el rendimiento.
+            var skipNumber = (query.PageNumber-1) * query.PageSize;
+
+            return  await  areas.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Area> CreateAsync(Area area)

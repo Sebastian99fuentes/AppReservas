@@ -19,6 +19,7 @@ Microsoft.AspNetCore.Mvc.NewtonsoftJson version '8.0.8'
 dotnet ef migrations add InitialCreate 
  dotnet ef database update  
 
-
-
+Microsoft.Extensions.Identity.Core  version '8.0.8' 
+Microsoft.AspNetCore.Identity.EntityFrameworkCore  version '8.0.8'
+Microsoft.AspNetCore.Authentication.JwtBearer  version '8.0.8' 
  Formato de Fecha es UTC ISO 8601 
