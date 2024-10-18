@@ -3,18 +3,47 @@ using api.Data.Models;
 using api.Interfaces;
 using api.Repository;
 using api.Repository.Interfaces;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
+
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -45,6 +74,13 @@ builder.Services.AddAuthentication(Options =>{
     Options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 
 }).AddJwtBearer(Options => {
+
+      var signingKey = builder.Configuration["JWT:SigningKey"];
+    if (string.IsNullOrWhiteSpace(signingKey))
+    {
+        throw new ArgumentNullException("JWT:SigningKey", "La clave JWT no puede ser nula o vacía.");
+    }
+
     Options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -53,14 +89,14 @@ builder.Services.AddAuthentication(Options =>{
         ValidAudience = builder.Configuration["JWT:Audience"],
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigninKey"])
+            System.Text.Encoding.UTF8.GetBytes(signingKey)
         )
     };
 });
 ///users
 
 
-
+builder.Services.AddScoped<ItokenService,  TokenService>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
