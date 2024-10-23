@@ -36,6 +36,11 @@ namespace api.Repository
                     areas = query.IsDecsending ? areas.OrderByDescending(a => a.Nombre) : areas.OrderBy( a=> a.Nombre);
                 }
             } 
+            else
+            {
+                // Orden por defecto para evitar advertencias de EF Core
+              areas = areas.OrderBy(a => a.Id); // Asumiendo que 'Id' es una clave única
+            }
 //  Este código es un patrón común para implementar paginación eficiente usando LINQ con Entity Framework.
 //  El uso de Skip y Take permite extraer solo los elementos necesarios por página, reduciendo la carga y mejorando el rendimiento.
             var skipNumber = (query.PageNumber-1) * query.PageSize;

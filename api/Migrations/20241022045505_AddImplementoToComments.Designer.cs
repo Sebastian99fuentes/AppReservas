@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api.Data;
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBConntextModelSnapshot : ModelSnapshot
+    [Migration("20241022045505_AddImplementoToComments")]
+    partial class AddImplementoToComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,13 +53,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1db608e1-0df7-4c1f-be5d-276009c13598",
+                            Id = "522d2a44-9f43-4d8b-aba1-eb4efb05b44d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ba8f0915-52da-40bb-b183-f745aa4c197b",
+                            Id = "1a71034f-d8d2-40a0-9c45-6474f14bef04",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -366,22 +369,15 @@ namespace api.Migrations
                 {
                     b.HasOne("api.Models.Area", "Area")
                         .WithMany("Comments")
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AreaId");
 
                     b.HasOne("api.Data.Models.Implemento", "Implemento")
-                        .WithMany("Comments")
-                        .HasForeignKey("ImplementoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("ImplementoId");
 
                     b.Navigation("Area");
 
                     b.Navigation("Implemento");
-                });
-
-            modelBuilder.Entity("api.Data.Models.Implemento", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("api.Models.Area", b =>

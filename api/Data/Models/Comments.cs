@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Data.Models;
 
 namespace api.Models
 {
@@ -15,5 +16,10 @@ namespace api.Models
         // Navigation 
         public int? AreaId {get; set; }     // Navigation 
         public Area? Area {get; set; }
+
+
+           // Navigation 
+        public int? ImplementoId {get; set; }     // Navigation 
+        public Implemento? Implemento {get; set; }
     }
 }

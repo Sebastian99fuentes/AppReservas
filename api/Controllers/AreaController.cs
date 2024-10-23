@@ -7,6 +7,7 @@ using api.Controllers.Helpers;
 using api.Controllers.Mappers;
 using api.Data;
 using api.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,8 +25,9 @@ namespace api.Controllers
             
         }
 
-
+      
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll( [FromQuery] QueryObject query)
         {
             // está recuperando una lista de todas las áreas desde la base de datos

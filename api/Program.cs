@@ -99,6 +99,7 @@ builder.Services.AddAuthentication(Options =>{
 builder.Services.AddScoped<ItokenService,  TokenService>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IImplementosRepository, ImplementoRepository>();
 
 var app = builder.Build();
 
