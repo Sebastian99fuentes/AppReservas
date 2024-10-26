@@ -22,7 +22,9 @@ namespace api.Data
         public DbSet<Area> Area {get; set; }
         public DbSet<Comments> Comments {get; set; } 
 
-        public DbSet<Implemento> Implemento {get; set; }
+        public DbSet<Implemento> Implemento {get; set; } 
+
+        public DbSet<Horario> Horario {get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
