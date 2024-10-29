@@ -11,10 +11,10 @@ namespace api.Controllers.Dtos.Horario
     {
 
         [Required]
-        public DiaSemana Dia { get; set; }  // Día específico.
+        public int Dia { get; set; }  // Día específico.
 
         [Required]
-        public TimeSpan Hora { get; set; }  // Hora específica (para áreas).
+        public int Hora { get; set; }  // Hora específica (para áreas).
 
          [Required]
         public bool EsImplemento { get; set; }  // Flag para saber si es un implemento   

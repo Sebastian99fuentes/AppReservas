@@ -101,6 +101,7 @@ builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IImplementosRepository, ImplementoRepository>();
 builder.Services.AddScoped<IHorarioRepository, HorarioRepository>();
+builder.Services.AddScoped<IReservasRepository, ReservaRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

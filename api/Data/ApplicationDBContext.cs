@@ -26,6 +26,8 @@ namespace api.Data
 
         public DbSet<Horario> Horario {get; set; }
 
+        public DbSet<Reserva> Reserva {get; set;}
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
                 builder.Entity<Comments>()

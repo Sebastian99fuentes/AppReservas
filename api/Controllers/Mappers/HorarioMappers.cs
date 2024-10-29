@@ -18,7 +18,7 @@ namespace api.Controllers.Mappers
          var Horario = new HorarioDto
         {
            Id = horarioModel.Id,
-           Dia = (Dtos.Horario.DiaSemana)(int)horarioModel.Dia,
+           Dia = horarioModel.Dia,
            Hora = horarioModel.Hora,
            Disponible = horarioModel.Disponible
         }; 
@@ -36,10 +36,6 @@ namespace api.Controllers.Mappers
 
         }
 
-// Transforma el DTO (CreateUpdateComentRequestDto) en una entidad Comments, que es lo que 
-// probablemente necesitas para guardarlo o actualizarlo en la base de datos.
-// Usa el id del área (o comentario) que se pasó como parámetro desde la ruta.
-
         public static Horario ToHorarioFromCreate(this CreateHorarioRequestDto horarioModel, int areaImplementoId, bool esImplemento)
         {
 
@@ -47,7 +43,7 @@ namespace api.Controllers.Mappers
               {
                    return new Horario
                    {
-                       Dia = (Data.Models.DiaSemana)(int)horarioModel.Dia,
+                       Dia = horarioModel.Dia,
                        Hora = horarioModel.Hora,
                        Disponible = true,  // Asumimos que es libre por defecto.
                        ImplementoId = areaImplementoId,

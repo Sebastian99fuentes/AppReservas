@@ -102,7 +102,7 @@ namespace api.Controllers
 
             if(horario == null)
             {
-                return NotFound("Comment not found");
+                return NotFound("horario no se pudo actualizar");
             }
 
             return Ok(horario.ToHorarioDto());
@@ -113,8 +113,6 @@ namespace api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         { 
-
-            
 
             var horarioModel = await _IHorarioRepository.DeleteAsync(id);
 
