@@ -4,10 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace api.Controllers.Dtos.Horario
+{ 
+          public enum DiaSemana
 {
+    Domingo = 0,
+    Lunes = 1,
+    Martes = 2,
+    Miércoles = 3,
+    Jueves = 4,
+    Viernes = 5,
+    Sábado = 6
+} 
     public class HorarioDto
     {
-         public int Id { get; set; }
+    public int Id { get; set; }
 
     public DiaSemana Dia { get; set; }  // Día específico.
 

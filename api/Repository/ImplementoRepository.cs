@@ -82,5 +82,10 @@ namespace api.Repository
         {
            return await _context.Implemento.Include(c=>c.Comments).AsQueryable().FirstOrDefaultAsync(x => x.Id== id);
         }
+
+        public Task<bool> Exist(int id)
+        {
+             return _context.Implemento.AnyAsync(a => a.Id ==id);
+        }
     }
 }

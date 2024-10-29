@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Controllers.Dtos.Horario;
 using api.Controllers.Mappers;
 using api.Interfaces;
+using api.Repository;
 using api.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +17,12 @@ namespace api.Controllers
     {
          private readonly IHorarioRepository _IHorarioRepository;
          private readonly IAreaRepository _IAreaRepository;
-        public HorarioController(  IHorarioRepository horarioRepository, IAreaRepository areaRepository)
+         private readonly IImplementosRepository _IImplementoRepository;
+        public HorarioController(  IHorarioRepository horarioRepository, IAreaRepository areaRepository, IImplementosRepository implementoRepository)
         {
             _IHorarioRepository = horarioRepository;
             _IAreaRepository = areaRepository;
-            
+            _IImplementoRepository = implementoRepository;
         } 
 
         [HttpGet]
@@ -49,53 +51,74 @@ namespace api.Controllers
         }
 
         [HttpPost("{AreaId:int}")]
-        public async Task<IActionResult> Create([FromRoute] int AreaId, CreateUpdateComentRequestDto comenDto)
+        public async Task<IActionResult> Create([FromRoute] int AreaId, CreateHorarioRequestDto horarioDto)
         {
             
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if(!await _IAreaRepository.Exist(AreaId))
+            if(horarioDto.EsImplemento)
             {
-                return BadRequest("Area no existe");
+                if(!await _IImplementoRepository.Exist(AreaId))
+                    return BadRequest("Implemento no existe");
+
             } 
+            else
+            {
+                 if(!await _IAreaRepository.Exist(AreaId))
+                     return BadRequest("Area no existe"); 
 
-            var commentModel = comenDto.ToCommentFromCreate(AreaId);
+            }        
+            
+            var horarioModel = horarioDto.ToHorarioFromCreate(AreaId,horarioDto.EsImplemento);
 
-            await _commentRepository.CreateAsync(commentModel);
+            await _IHorarioRepository.CreateAsync(horarioModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+            return CreatedAtAction(nameof(GetById), new { id = horarioModel.Id }, horarioModel.ToHorarioDto());
         }
 
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateUpdateComentRequestDto ComenDto )
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateHorarioRequestDto horarioDto )
         {
             
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
-             
-             
-            var comment = await _commentRepository.UpdateAsync(id, ComenDto.ToCommentFromCreate(id));
 
-            if(comment == null)
+            if(horarioDto.EsImplemento)
+            {
+                if(!await _IImplementoRepository.Exist(id))
+                    return BadRequest("Implemento no existe");
+
+            } 
+            else
+            {
+                 if(!await _IAreaRepository.Exist(id))
+                     return BadRequest("Area no existe"); 
+
+            }        
+            var horario = await _IHorarioRepository.UpdateAsync(id, horarioDto.ToHorarioFromCreate(id,horarioDto.EsImplemento));
+
+            if(horario == null)
             {
                 return NotFound("Comment not found");
             }
 
-            return Ok(comment.ToCommentDto());
+            return Ok(horario.ToHorarioDto());
         }
 
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> Delette([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         { 
 
-            var commentModel = await _commentRepository.DeleteAsync(id);
+            
 
-            if(commentModel == null)
+            var horarioModel = await _IHorarioRepository.DeleteAsync(id);
+
+            if(horarioModel == null)
             {
                 return NotFound("Comment does not exist");
             }

@@ -19,5 +19,7 @@ namespace api.Repository.Interfaces
         Task <Implemento?> UpdateAsync(int id, CreateImplementoRequestDto implementoDto);
 
         Task<Implemento?> DeleteAsync(int id);
+        Task<bool> Exist(int id);  
+        
     }
 }

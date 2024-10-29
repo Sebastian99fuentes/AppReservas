@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Controllers.Dtos.Horario
 {
+
     public class CreateHorarioRequestDto
     {
 
@@ -15,5 +16,7 @@ namespace api.Controllers.Dtos.Horario
         [Required]
         public TimeSpan Hora { get; set; }  // Hora específica (para áreas).
 
+         [Required]
+        public bool EsImplemento { get; set; }  // Flag para saber si es un implemento   
     }
 }
