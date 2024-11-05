@@ -48,7 +48,7 @@ namespace api.Repository
              return implemento;
         }
 
-        public  async Task<Implemento?> UpdateAsync(int id, CreateImplementoRequestDto implementoDto)
+        public  async Task<Implemento?> UpdateAsync(Guid id, CreateImplementoRequestDto implementoDto)
         {
            var existingImplemento = await _context.Implemento.FirstOrDefaultAsync(i => i.Id == id);
                if(existingImplemento == null)
@@ -64,7 +64,7 @@ namespace api.Repository
 
         }
 
-         public async Task<Implemento?> DeleteAsync(int id)
+         public async Task<Implemento?> DeleteAsync(Guid id)
         {
            var implemento = _context.Implemento.FirstOrDefault(i => i.Id == id);
            if(implemento == null)
@@ -78,12 +78,12 @@ namespace api.Repository
            return implemento;
         }
 
-        public async Task<Implemento?> GetByIdAsync(int id)
+        public async Task<Implemento?> GetByIdAsync(Guid id)
         {
            return await _context.Implemento.Include(c=>c.Comments).AsQueryable().FirstOrDefaultAsync(x => x.Id== id);
         }
 
-        public Task<bool> Exist(int id)
+        public Task<bool> Exist(Guid id)
         {
              return _context.Implemento.AnyAsync(a => a.Id ==id);
         }

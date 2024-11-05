@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace api.Controllers.Dtos.Implemento
 {
-    public class CreateImplementoRequestDto
+    public class CreateReservaRequestDto
     {
    
     [Required]

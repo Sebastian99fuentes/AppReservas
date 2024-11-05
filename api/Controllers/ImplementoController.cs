@@ -34,8 +34,8 @@ namespace api.Controllers
             return Ok(implemento);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById ([FromRoute] int id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById ([FromRoute] Guid id)
         {
             var implemento = await _implementoRepository.GetByIdAsync(id);
 
@@ -44,7 +44,8 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            return Ok(implemento);
+            return Ok(implemento.ToImplementoDto());
+
         }
 
         [HttpPost]
@@ -60,9 +61,9 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id:int}")]
+        [Route("{id:guid}")]
 
-        public async Task<IActionResult> Update ([FromRoute] int id, [FromBody] CreateImplementoRequestDto Implemento)
+        public async Task<IActionResult> Update ([FromRoute] Guid id, [FromBody] CreateImplementoRequestDto Implemento)
         {
             if(!ModelState.IsValid)
                     return BadRequest(ModelState); 
@@ -79,9 +80,9 @@ namespace api.Controllers
 
 
         [HttpDelete]
-         [Route("{id:int}")] 
+         [Route("{id:guid}")] 
 
-        public async Task<IActionResult> Delete ([FromRoute] int id)
+        public async Task<IActionResult> Delete ([FromRoute] Guid id)
         {
             var implemento = await _implementoRepository.DeleteAsync(id);
 

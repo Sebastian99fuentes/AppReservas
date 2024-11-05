@@ -36,8 +36,8 @@ namespace api.Controllers
 
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var horarios = await _IHorarioRepository.GetByIdAsync(id);
             
@@ -50,8 +50,8 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("{AreaId:int}")]
-        public async Task<IActionResult> Create([FromRoute] int AreaId, CreateHorarioRequestDto horarioDto)
+        [HttpPost("{AreaId:guid}")]
+        public async Task<IActionResult> Create([FromRoute] Guid AreaId, CreateHorarioRequestDto horarioDto)
         {
             
             if(!ModelState.IsValid)
@@ -79,8 +79,8 @@ namespace api.Controllers
 
 
         [HttpPut]
-        [Route("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateHorarioRequestDto horarioDto )
+        [Route("{id:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CreateHorarioRequestDto horarioDto )
         {
             
             if(!ModelState.IsValid)
@@ -110,8 +110,8 @@ namespace api.Controllers
 
 
         [HttpDelete]
-        [Route("{id:int}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        [Route("{id:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         { 
 
             var horarioModel = await _IHorarioRepository.DeleteAsync(id);

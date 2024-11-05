@@ -24,7 +24,7 @@ namespace api.Repository
             return comment;
         }
 
-        public async Task<Comments?> DeleteAsync(int id)
+        public async Task<Comments?> DeleteAsync(Guid id)
         {
             var existingComment = await _context.Comments.FirstOrDefaultAsync( c => c.Id ==id);
             if(existingComment == null)
@@ -44,12 +44,12 @@ namespace api.Repository
            return  await _context.Comments.ToListAsync();
         }
 
-        public async Task<Comments?> GetByIdAsync(int id)
+        public async Task<Comments?> GetByIdAsync(Guid id)
         {
             return await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Comments?> UpdateAsync(int id, Comments commentModel)
+        public async Task<Comments?> UpdateAsync(Guid id, Comments commentModel)
         {
             var existingComment = await _context.Comments.FindAsync(id);
 

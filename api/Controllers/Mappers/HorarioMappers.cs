@@ -36,7 +36,7 @@ namespace api.Controllers.Mappers
 
         }
 
-        public static Horario ToHorarioFromCreate(this CreateHorarioRequestDto horarioModel, int areaImplementoId, bool esImplemento)
+        public static Horario ToHorarioFromCreate(this CreateHorarioRequestDto horarioModel, Guid areaImplementoId, bool esImplemento)
         {
 
               if (esImplemento)
@@ -53,8 +53,8 @@ namespace api.Controllers.Mappers
                  else
                {
                 return new Horario
-                   {
-                        Dia = (Data.Models.DiaSemana)(int)horarioModel.Dia,
+                   { 
+                         Dia = horarioModel.Dia,
                         Hora = horarioModel.Hora,
                         Disponible = true,
                         AreaId = areaImplementoId,

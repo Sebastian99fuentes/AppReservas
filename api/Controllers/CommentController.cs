@@ -16,11 +16,13 @@ namespace api.Controllers
     {
          private readonly ICommentRepository _commentRepository;
          private readonly IAreaRepository _IAreaRepository;
-        public CommentController(  ICommentRepository commentRepository, IAreaRepository areaRepository)
+
+         private readonly IImplementosRepository _IImplementoRepository;
+        public CommentController(  ICommentRepository commentRepository, IAreaRepository areaRepository, IImplementosRepository IImplementoRepository)
         {
             _commentRepository = commentRepository;
             _IAreaRepository = areaRepository;
-            
+            _IImplementoRepository =IImplementoRepository;
         } 
 
         [HttpGet]
@@ -34,8 +36,8 @@ namespace api.Controllers
 
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var comments = await _commentRepository.GetByIdAsync(id);
             
@@ -48,36 +50,48 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("{AreaId:int}")]
-        public async Task<IActionResult> Create([FromRoute] int AreaId, CreateUpdateComentRequestDto comenDto)
-        {
-            
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+        [HttpPost("{Id:guid}")]
+        public async Task<IActionResult> Create([FromRoute] Guid Id, CreateUpdateComentRequestDto comenDto )
+       {
+            if (!ModelState.IsValid)
+                 return BadRequest(ModelState);
 
-            if(!await _IAreaRepository.Exist(AreaId))
-            {
-                return BadRequest("Area no existe");
-            } 
+               var areaExists = await _IAreaRepository.Exist(Id);
+                var implementoExists = await _IImplementoRepository.Exist(Id);
 
-            var commentModel = comenDto.ToCommentFromCreate(AreaId);
+                // Si el ID no existe en ambos repositorios, devolvemos un error
+             if (!areaExists && !implementoExists)
+                return BadRequest("El área o el implemento no existen");
 
-            await _commentRepository.CreateAsync(commentModel);
+              // Determinamos el tipo de comentario según si es área o implemento
+              var isArea = areaExists;
+              var commentModel = comenDto.ToCommentFromCreate(Id, isArea);
 
-            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+             // Creamos el comentario en el repositorio
+              await _commentRepository.CreateAsync(commentModel);
+
+                 // Retornamos la respuesta de creación
+              return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+  
         }
 
-
         [HttpPut]
-        [Route("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateUpdateComentRequestDto ComenDto )
+        [Route("{id:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CreateUpdateComentRequestDto ComenDto )
         {
             
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+
+                var areaExists = await _IAreaRepository.Exist(id);
+                var implementoExists = await _IImplementoRepository.Exist(id);
+                var isArea = areaExists;
+                // Si el ID no existe en ambos repositorios, devolvemos un error
+             if (!areaExists && !implementoExists)
+                return BadRequest("El área o el implemento no existen");
              
-             
-            var comment = await _commentRepository.UpdateAsync(id, ComenDto.ToCommentFromCreate(id));
+            var comment = await _commentRepository.UpdateAsync(id, ComenDto.ToCommentFromCreate(id,isArea));
 
             if(comment == null)
             {
@@ -89,8 +103,8 @@ namespace api.Controllers
 
 
         [HttpDelete]
-        [Route("{id:int}")]
-        public async Task<IActionResult> Delette([FromRoute] int id)
+        [Route("{id:guid}")]
+        public async Task<IActionResult> Delette([FromRoute] Guid id)
         { 
 
             var commentModel = await _commentRepository.DeleteAsync(id);

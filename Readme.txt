@@ -22,4 +22,6 @@ dotnet ef migrations add InitialCreate
 Microsoft.Extensions.Identity.Core  version '8.0.8' 
 Microsoft.AspNetCore.Identity.EntityFrameworkCore  version '8.0.8'
 Microsoft.AspNetCore.Authentication.JwtBearer  version '8.0.8' 
- Formato de Fecha es UTC ISO 8601 
+Formato de Fecha es UTC ISO 8601  
+
+Sin conflictos entre entidades: Al tener IDs únicos, no tendrás problemas de colisiones entre áreas, implementos y comentarios. UUIDs en lugar de IDs 

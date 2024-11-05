@@ -13,15 +13,15 @@ namespace api.Interfaces
         
             Task<List<Area>> GetAllAsync(QueryObject query);
 
-             Task<Area?> GetByIdAsync(int id);  ///first or default cant be null
+             Task<Area?> GetByIdAsync(Guid id);  ///first or default cant be null
 
             Task<Area> CreateAsync(Area area);
 
-             Task<Area?> UpdateAsync(int id, CreateAreaRequestDto areaDto);
+             Task<Area?> UpdateAsync(Guid id, CreateAreaRequestDto areaDto);
 
-             Task<Area?> DeleteAsync(int id); 
+             Task<Area?> DeleteAsync(Guid id); 
 
-             Task<bool> Exist(int id); 
+             Task<bool> Exist(Guid id); 
         
     }
 }

@@ -55,7 +55,7 @@ namespace api.Repository
              return area;
         }
 
-        public  async Task<Area?> DeleteAsync(int id)
+        public  async Task<Area?> DeleteAsync(Guid  id)
         {
              var areaModel = await _context.Area.FirstOrDefaultAsync(x => x.Id== id);
                 if(areaModel == null)
@@ -69,12 +69,12 @@ namespace api.Repository
               return areaModel;
         }
 
-        public async Task<Area?> GetByIdAsync(int id)
+        public async Task<Area?> GetByIdAsync(Guid id)
         {
            return await _context.Area.Include(c=>c.Comments).FirstOrDefaultAsync(x => x.Id== id);
         }
 
-        public async Task<Area?> UpdateAsync(int id, CreateAreaRequestDto areaDto)
+        public async Task<Area?> UpdateAsync(Guid id, CreateAreaRequestDto areaDto)
         {
            var existingArea = await _context.Area.FirstOrDefaultAsync(x => x.Id== id);
              if(existingArea == null)
@@ -91,7 +91,7 @@ namespace api.Repository
               return existingArea;
         }
 
-        public Task<bool> Exist(int id)
+        public Task<bool> Exist(Guid id)
         {
             return _context.Area.AnyAsync(a => a.Id ==id);
         }

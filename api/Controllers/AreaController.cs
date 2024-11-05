@@ -27,7 +27,7 @@ namespace api.Controllers
 
       
         [HttpGet]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> GetAll( [FromQuery] QueryObject query)
         {
             // está recuperando una lista de todas las áreas desde la base de datos
@@ -41,8 +41,8 @@ namespace api.Controllers
             return Ok(areas);
         }
 
-         [HttpGet("{id:int}")]
-         public async Task<IActionResult> GetById([FromRoute] int id)
+         [HttpGet("{id:guid}")]
+         public async Task<IActionResult> GetById([FromRoute] Guid id)
          {
             var area = await _areaRepository.GetByIdAsync(id);
 
@@ -68,8 +68,8 @@ namespace api.Controllers
          }
 
          [HttpPut]
-         [Route("{id:int}")]
-           public  async Task<IActionResult> Update ([FromRoute] int id, [FromBody] CreateAreaRequestDto Area)
+         [Route("{id:guid}")]
+           public  async Task<IActionResult> Update ([FromRoute] Guid id, [FromBody] CreateAreaRequestDto Area)
          {
 
             
@@ -88,8 +88,8 @@ namespace api.Controllers
          }
 
           [HttpDelete]
-         [Route("{id:int}")]
-         public async Task<IActionResult> Delete ([FromRoute] int id)
+         [Route("{id:guid}")]
+         public async Task<IActionResult> Delete ([FromRoute] Guid id)
          {
             var area = await _areaRepository.DeleteAsync(id);
 

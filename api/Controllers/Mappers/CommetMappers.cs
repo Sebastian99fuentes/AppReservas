@@ -22,7 +22,11 @@ namespace api.Controllers.Mappers
                 
                 CreatedOn = commentModel.CreatedOn,
                 //FK
-                AreaId = commentModel.AreaId
+                AreaId = commentModel.AreaId,
+
+                ImplementoId = commentModel.ImplementoId
+
+                
 
             };
         }
@@ -31,20 +35,27 @@ namespace api.Controllers.Mappers
 // probablemente necesitas para guardarlo o actualizarlo en la base de datos.
 // Usa el id del área (o comentario) que se pasó como parámetro desde la ruta.
 
-        public static Comments ToCommentFromCreate(this CreateUpdateComentRequestDto commentModel, int areaId)
-        {
-            return new Comments
-            {
-   
-                Titulo = commentModel.Titulo,
-                
-                Comentario = commentModel.Comentario,
-                //FK
-                AreaId = areaId
+         public static Comments ToCommentFromCreate(this CreateUpdateComentRequestDto commentModel, Guid id, bool isArea)
+         {
+             // Inicializamos el comentario con las propiedades comunes
+             var comment = new Comments
+                 {
+                      Titulo = commentModel.Titulo,
+                       Comentario = commentModel.Comentario,
+                  };
 
-            };
-        }
+               // Asignamos el ID de área o implemento según corresponda
+               if (isArea)
+               {
+                      comment.AreaId = id;
+               }
+              else
+              {
+                    comment.ImplementoId = id;
+              }
 
+                   return comment;   
+         }
 
     }
 } 

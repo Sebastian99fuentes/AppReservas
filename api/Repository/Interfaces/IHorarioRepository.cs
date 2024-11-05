@@ -10,12 +10,12 @@ namespace api.Repository.Interfaces
     {
         Task<List<Horario>> GetAllAsync();
 
-         Task<Horario?> GetByIdAsync(int id); 
+         Task<Horario?> GetByIdAsync(Guid id); 
 
          Task<Horario?>  CreateAsync(Horario horario);
 
-         Task<Horario?> UpdateAsync(int id, Horario horario );
+         Task<Horario?> UpdateAsync(Guid id, Horario horario );
 
-         Task<Horario?> DeleteAsync(int id);
+         Task<Horario?> DeleteAsync(Guid id);
     }
 }

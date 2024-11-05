@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api.Data;
@@ -12,11 +11,9 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241022041307_Implementos")]
-    partial class Implementos
+    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,13 +50,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "60a0bc6a-7545-461c-bc64-b4ed4a312d70",
+                            Id = "3e738c2a-329a-4ea1-a846-4c008df173cf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "775a7e75-f267-4774-9f4c-8b38d5c1f931",
+                            Id = "a8ab8fd9-73c5-4aa4-b69d-acadbdd882e1",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -235,13 +232,41 @@ namespace api.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("api.Data.Models.Implemento", b =>
+            modelBuilder.Entity("api.Data.Models.Horario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AreaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Dia")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<bool>("Disponible")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Hora")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ImplementoId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("ImplementoId");
+
+                    b.ToTable("Horario");
+                });
+
+            modelBuilder.Entity("api.Data.Models.Implemento", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Cantidad")
                         .HasColumnType("integer");
@@ -255,13 +280,35 @@ namespace api.Migrations
                     b.ToTable("Implemento");
                 });
 
+            modelBuilder.Entity("api.Data.Models.Reserva", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("HorarioId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HorarioId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reserva");
+                });
+
             modelBuilder.Entity("api.Models.Area", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -282,14 +329,12 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Comments", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AreaId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("AreaId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Comentario")
                         .IsRequired()
@@ -298,8 +343,8 @@ namespace api.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("ImplementoId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("ImplementoId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -365,10 +410,10 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("api.Models.Comments", b =>
+            modelBuilder.Entity("api.Data.Models.Horario", b =>
                 {
                     b.HasOne("api.Models.Area", "Area")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("AreaId");
 
                     b.HasOne("api.Data.Models.Implemento", "Implemento")
@@ -378,6 +423,45 @@ namespace api.Migrations
                     b.Navigation("Area");
 
                     b.Navigation("Implemento");
+                });
+
+            modelBuilder.Entity("api.Data.Models.Reserva", b =>
+                {
+                    b.HasOne("api.Data.Models.Horario", "Horario")
+                        .WithMany()
+                        .HasForeignKey("HorarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Data.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Horario");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("api.Models.Comments", b =>
+                {
+                    b.HasOne("api.Models.Area", "Area")
+                        .WithMany("Comments")
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("api.Data.Models.Implemento", "Implemento")
+                        .WithMany("Comments")
+                        .HasForeignKey("ImplementoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Area");
+
+                    b.Navigation("Implemento");
+                });
+
+            modelBuilder.Entity("api.Data.Models.Implemento", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("api.Models.Area", b =>

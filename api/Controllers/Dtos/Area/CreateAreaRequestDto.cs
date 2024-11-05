@@ -10,22 +10,22 @@ namespace api.Controllers.Dtos.Area
     {
         
         [Required]
-        [MinLength(50, ErrorMessage ="Nombre must be 50 characters")]
-        [MaxLength(300, ErrorMessage ="Title cannot be over 300 characters")]
+        [MinLength(10, ErrorMessage ="Nombre must be 50 characters")]
+        [MaxLength(50, ErrorMessage ="Title cannot be over 300 characters")]
         public string Nombre { get; set; } = string.Empty;         // Nombre de la cancha, sala, etc.
 
 
 
         [Required]
-        [MinLength(50, ErrorMessage ="Nombre must be 50 characters")]
-        [MaxLength(300, ErrorMessage ="Title cannot be over 300 characters")]
+        [MinLength(10, ErrorMessage ="Nombre must be 50 characters")]
+        [MaxLength(50, ErrorMessage ="Title cannot be over 300 characters")]
         public string Ubicacion { get; set; }  = string.Empty;       // Ubicación del espacio 
 
 
 
         [Required]
-        [MinLength(50, ErrorMessage ="Nombre must be 50 characters")]
-        [MaxLength(300, ErrorMessage ="Title cannot be over 300 characters")]
+        [MinLength(10, ErrorMessage ="Nombre must be 50 characters")]
+        [MaxLength(50, ErrorMessage ="Title cannot be over 300 characters")]
         public string Descripcion { get; set; } = string.Empty;     // Descripción adicional
 
     }

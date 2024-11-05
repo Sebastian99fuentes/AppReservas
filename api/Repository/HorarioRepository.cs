@@ -24,7 +24,7 @@ namespace api.Repository
            return horario;
         }
 
-        public async Task<Horario?> DeleteAsync(int id)
+        public async Task<Horario?> DeleteAsync(Guid id)
         {
           var existeHorario = await _context.Horario.FirstOrDefaultAsync(h => h.Id == id);
           if(existeHorario == null)
@@ -44,12 +44,12 @@ namespace api.Repository
             return await _context.Horario.ToListAsync();
         }
 
-        public async Task<Horario?> GetByIdAsync(int id)
+        public async Task<Horario?> GetByIdAsync(Guid id)
         {
            return await _context.Horario.FirstOrDefaultAsync( h => h.Id == id);
         }
 
-        public async Task<Horario?> UpdateAsync(int id, Horario horariodto)
+        public async Task<Horario?> UpdateAsync(Guid id, Horario horariodto)
         {
            var existehorario = await _context.Horario.FirstOrDefaultAsync(h =>h.Id == id);
            if(existehorario == null)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,9 +8,10 @@ namespace api.Data.Models
 {
     public class Reserva
     {
-        public int Id { get; set; }
+       [Key]
+      public Guid Id { get; set; } = Guid.NewGuid(); // Esto generará un GUID automáticamente al crear un nuevo registro
    // Navigation 
-        public int UserId {get; set; }     // Navigation 
+        public Guid AppUserId {get; set; }     // Navigation 
         public AppUser User {get; set; } = null!;
 
 //         UserId: Es una clave foránea opcional que apunta al usuario que realizó la reserva.
@@ -18,7 +20,7 @@ namespace api.Data.Models
 // Ejemplo: Si tienes un objeto reserva, podrías acceder al nombre del usuario con algo como:
 
            // Navigation 
-        public int HorarioId {get; set; }     // Navigation 
+        public Guid HorarioId {get; set; }     // Navigation 
         public Horario Horario {get; set; } = null!;
 
 //         HorarioId: Es una clave foránea opcional que indica el horario reservado.

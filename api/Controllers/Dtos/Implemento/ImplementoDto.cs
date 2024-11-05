@@ -8,7 +8,7 @@ namespace api.Controllers.Dtos.Implemento
 {
     public class ImplementoDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string NombreImple { get; set; } = string.Empty;
 
         public int Cantidad { get; set; }

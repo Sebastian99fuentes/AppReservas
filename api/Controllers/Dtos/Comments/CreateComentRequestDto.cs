@@ -17,7 +17,8 @@ namespace api.Controllers.Dtos.Comments
         [Required]
         [MinLength(1, ErrorMessage ="Comment must be 1 characters")]
         [MaxLength(300, ErrorMessage ="Comment cannot be over 300 characters")]
-        public string Comentario {get; set;}= string.Empty;
+        public string Comentario {get; set;}= string.Empty; 
+
 
     }
 }

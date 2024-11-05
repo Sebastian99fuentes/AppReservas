@@ -9,11 +9,25 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedRole : Migration
+    public partial class primerabdsd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Area",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Nombre = table.Column<string>(type: "text", nullable: false),
+                    Ubicacion = table.Column<string>(type: "text", nullable: false),
+                    Descripcion = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Area", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -51,6 +65,19 @@ namespace api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Implemento",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    NombreImple = table.Column<string>(type: "text", nullable: false),
+                    Cantidad = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Implemento", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,13 +186,92 @@ namespace api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Titulo = table.Column<string>(type: "text", nullable: false),
+                    Comentario = table.Column<string>(type: "text", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AreaId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ImplementoId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Area_AreaId",
+                        column: x => x.AreaId,
+                        principalTable: "Area",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Implemento_ImplementoId",
+                        column: x => x.ImplementoId,
+                        principalTable: "Implemento",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Horario",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Dia = table.Column<int>(type: "integer", nullable: false),
+                    Hora = table.Column<int>(type: "integer", nullable: false),
+                    Disponible = table.Column<bool>(type: "boolean", nullable: false),
+                    AreaId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ImplementoId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Horario", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Horario_Area_AreaId",
+                        column: x => x.AreaId,
+                        principalTable: "Area",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Horario_Implemento_ImplementoId",
+                        column: x => x.ImplementoId,
+                        principalTable: "Implemento",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reserva",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    HorarioId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reserva", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reserva_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reserva_Horario_HorarioId",
+                        column: x => x.HorarioId,
+                        principalTable: "Horario",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4f1916c6-3969-482c-bc3f-1807b64dfcd7", null, "User", "USER" },
-                    { "521a7dd8-ea79-489e-979a-9a7dab786fdf", null, "Admin", "ADMIN" }
+                    { "3e738c2a-329a-4ea1-a846-4c008df173cf", null, "Admin", "ADMIN" },
+                    { "a8ab8fd9-73c5-4aa4-b69d-acadbdd882e1", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -204,6 +310,36 @@ namespace api.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AreaId",
+                table: "Comments",
+                column: "AreaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_ImplementoId",
+                table: "Comments",
+                column: "ImplementoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Horario_AreaId",
+                table: "Horario",
+                column: "AreaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Horario_ImplementoId",
+                table: "Horario",
+                column: "ImplementoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reserva_HorarioId",
+                table: "Reserva",
+                column: "HorarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reserva_UserId",
+                table: "Reserva",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -225,10 +361,25 @@ namespace api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Reserva");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Horario");
+
+            migrationBuilder.DropTable(
+                name: "Area");
+
+            migrationBuilder.DropTable(
+                name: "Implemento");
         }
     }
 }

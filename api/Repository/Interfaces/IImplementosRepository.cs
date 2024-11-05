@@ -12,14 +12,14 @@ namespace api.Repository.Interfaces
     {
         Task <List<Implemento>>  GetallAsync(QueryObject query); 
 
-        Task<Implemento?> GetByIdAsync(int id);
+        Task<Implemento?> GetByIdAsync(Guid id);
 
         Task <Implemento?> CreateAsync(Implemento implemento);
 
-        Task <Implemento?> UpdateAsync(int id, CreateImplementoRequestDto implementoDto);
+        Task <Implemento?> UpdateAsync(Guid id, CreateImplementoRequestDto implementoDto);
 
-        Task<Implemento?> DeleteAsync(int id);
-        Task<bool> Exist(int id);  
+        Task<Implemento?> DeleteAsync(Guid id);
+        Task<bool> Exist(Guid id);  
         
     }
 }
