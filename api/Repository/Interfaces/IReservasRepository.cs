@@ -22,7 +22,9 @@ namespace api.Interfaces
 
              Task<Reserva?> DeleteAsync(Guid id); 
 
-              Task<bool> Exist(Guid id); 
+              Task<bool> Exist(Guid id);  
+
+              Task<int> CountActiveReservationsByUserAsync(Guid usuarioId);
         
     }
 }

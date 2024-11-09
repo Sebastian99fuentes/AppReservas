@@ -22,7 +22,9 @@ namespace api.Repository
 
         public async Task<List<Area>> GetAllAsync(QueryObject query)
         {
-            var areas =   _context.Area.Include(c=>c.Comments).AsQueryable(); 
+            // var areas =   _context.Area.Include(c=>c.Comments).AsQueryable(); 
+
+              var areas =   _context.Area.AsQueryable(); 
             
             if(!string.IsNullOrWhiteSpace(query.AreaNombre))
             {

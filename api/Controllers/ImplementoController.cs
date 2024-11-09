@@ -26,7 +26,7 @@ namespace api.Controllers
              _implementoRepository = implementosRepository;
         }
 
-        [HttpGet]
+        [HttpGet ("GetAll-implemento")]
         public async Task<IActionResult> GetAll ([FromQuery] QueryObject query)
         {
             var implemento = await _implementoRepository.GetallAsync(query);
@@ -34,7 +34,7 @@ namespace api.Controllers
             return Ok(implemento);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("ById -implemento{id:guid}")]
         public async Task<IActionResult> GetById ([FromRoute] Guid id)
         {
             var implemento = await _implementoRepository.GetByIdAsync(id);
@@ -48,7 +48,7 @@ namespace api.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("create-implemento")]
         public async Task<IActionResult> Create ([FromBody] CreateImplementoRequestDto implementoDto)
         {
             if(!ModelState.IsValid)
@@ -61,7 +61,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id:guid}")]
+        [Route("Update-implemento{id:guid}")]
 
         public async Task<IActionResult> Update ([FromRoute] Guid id, [FromBody] CreateImplementoRequestDto Implemento)
         {
@@ -80,7 +80,7 @@ namespace api.Controllers
 
 
         [HttpDelete]
-         [Route("{id:guid}")] 
+        [Route("Delete-implemento{id:guid}")] 
 
         public async Task<IActionResult> Delete ([FromRoute] Guid id)
         {

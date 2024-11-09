@@ -1,3 +1,4 @@
+using api.Controllers.Mappers;
 using api.Data;
 using api.Data.Models;
 using api.Interfaces;
@@ -56,6 +57,12 @@ namespace api.Repository
                    .ToListAsync();
 
                return reservas;
+        }
+
+        public async  Task<int> CountActiveReservationsByUserAsync(Guid usuarioId)
+        {
+             return await _context.Reserva
+            .CountAsync(r => r.AppUserId == usuarioId);
         }
     }
 }

@@ -10,5 +10,8 @@ namespace api.Controllers.Dtos.Horario
     {
           [Required]
          public bool Disponible { get; set; }  // Indica si el horario está libre.
+
+            [Required]
+        public bool EsImplemento { get; set; }  // Flag para saber si es un implemento   
     }
 }

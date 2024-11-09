@@ -25,7 +25,7 @@ namespace api.Controllers
             _IImplementoRepository =IImplementoRepository;
         } 
 
-        [HttpGet]
+        [HttpGet ("GetAll-comments")]
         public async Task<IActionResult> GetAll()
         {
             var comments = await _commentRepository.GetAllAsync();
@@ -36,7 +36,7 @@ namespace api.Controllers
 
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("GetById-comments{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var comments = await _commentRepository.GetByIdAsync(id);
@@ -50,7 +50,7 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("{Id:guid}")]
+        [HttpPost("Create-comments{Id:guid}")]
         public async Task<IActionResult> Create([FromRoute] Guid Id, CreateUpdateComentRequestDto comenDto )
        {
             if (!ModelState.IsValid)
@@ -76,7 +76,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id:guid}")]
+        [Route("Update-comments{id:guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CreateUpdateComentRequestDto ComenDto )
         {
             
@@ -103,8 +103,8 @@ namespace api.Controllers
 
 
         [HttpDelete]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> Delette([FromRoute] Guid id)
+        [Route("Delete-comments{id:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         { 
 
             var commentModel = await _commentRepository.DeleteAsync(id);

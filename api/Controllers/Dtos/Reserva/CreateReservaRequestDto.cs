@@ -10,10 +10,10 @@ namespace api.Controllers.Dtos.Implemento
     {
    
     [Required]
-    public int UserId { get; set; } 
+    public Guid UserId { get; set; } 
 
     [Required]
-    public int HorarioId { get; set; }
+    public Guid HorarioId { get; set; }
 
     }
 }

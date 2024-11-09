@@ -19,14 +19,16 @@ namespace api.Controllers
     {
         // private readonly ApplicationDBContext _context;
          private readonly IAreaRepository _areaRepository;
-        public AreaController(  IAreaRepository areaRepository)
+
+         private readonly IReservasRepository _IReservaRepository;
+        public AreaController(  IAreaRepository areaRepository, IReservasRepository IReservaRepository)
         {
             _areaRepository = areaRepository;
-            
+            _IReservaRepository = IReservaRepository;
         }
 
       
-        [HttpGet]
+        [HttpGet ("GetAll-areas")]
         // [Authorize]
         public async Task<IActionResult> GetAll( [FromQuery] QueryObject query)
         {
@@ -41,7 +43,7 @@ namespace api.Controllers
             return Ok(areas);
         }
 
-         [HttpGet("{id:guid}")]
+         [HttpGet("GetById-areas{id:guid}")]
          public async Task<IActionResult> GetById([FromRoute] Guid id)
          {
             var area = await _areaRepository.GetByIdAsync(id);
@@ -54,7 +56,7 @@ namespace api.Controllers
             return Ok(area);
          } 
 
-         [HttpPost]
+        [HttpPost("create-area")]
          public  async Task<IActionResult> Create ([FromBody] CreateAreaRequestDto AreaDto)
          {
             
@@ -68,7 +70,7 @@ namespace api.Controllers
          }
 
          [HttpPut]
-         [Route("{id:guid}")]
+         [Route("Update-areas{id:guid}")]
            public  async Task<IActionResult> Update ([FromRoute] Guid id, [FromBody] CreateAreaRequestDto Area)
          {
 
@@ -88,9 +90,15 @@ namespace api.Controllers
          }
 
           [HttpDelete]
-         [Route("{id:guid}")]
+         [Route("Delete-areas{id:guid}")]
          public async Task<IActionResult> Delete ([FromRoute] Guid id)
          {
+
+            // var isAssignedToReservation = await _IReservaRepository.CountActiveReservationsByUserAsync(id);
+            //  if (isAssignedToReservation)
+            // {
+            //   return BadRequest("No se puede eliminar, ya que está asignado a una reserva activa.");
+            // }
             var area = await _areaRepository.DeleteAsync(id);
 
             if(area == null)

@@ -25,7 +25,7 @@ namespace api.Controllers
             _IImplementoRepository = implementoRepository;
         } 
 
-        [HttpGet]
+        [HttpGet("GetAll-horario")]
         public async Task<IActionResult> GetAll()
         {
             var horarios = await _IHorarioRepository.GetAllAsync();
@@ -36,7 +36,7 @@ namespace api.Controllers
 
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("GetById-horario{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var horarios = await _IHorarioRepository.GetByIdAsync(id);
@@ -50,7 +50,7 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("{AreaId:guid}")]
+        [HttpPost("Create-horario{AreaId:guid}")]
         public async Task<IActionResult> Create([FromRoute] Guid AreaId, CreateHorarioRequestDto horarioDto)
         {
             
@@ -79,38 +79,27 @@ namespace api.Controllers
 
 
         [HttpPut]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CreateHorarioRequestDto horarioDto )
+        [Route("Update-horario{id:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id)
         {
             
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+             // Verificar si el horario existe
+             var horario = await _IHorarioRepository.GetByIdAsync(id);
+              if (horario == null)
+                   return NotFound("El horario no existe");
 
-            if(horarioDto.EsImplemento)
-            {
-                if(!await _IImplementoRepository.Exist(id))
-                    return BadRequest("Implemento no existe");
+              var updatedHorario = await _IHorarioRepository.UpdateAsync(id);
+  
 
-            } 
-            else
-            {
-                 if(!await _IAreaRepository.Exist(id))
-                     return BadRequest("Area no existe"); 
-
-            }        
-            var horario = await _IHorarioRepository.UpdateAsync(id, horarioDto.ToHorarioFromCreate(id,horarioDto.EsImplemento));
-
-            if(horario == null)
-            {
-                return NotFound("horario no se pudo actualizar");
-            }
+                if (updatedHorario == null)
+                     return StatusCode(500, "No se pudo actualizar el horario"); 
 
             return Ok(horario.ToHorarioDto());
         }
 
 
         [HttpDelete]
-        [Route("{id:guid}")]
+        [Route("Delete-horario{id:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         { 
 

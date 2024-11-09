@@ -14,8 +14,10 @@ namespace api.Repository.Interfaces
 
          Task<Horario?>  CreateAsync(Horario horario);
 
-         Task<Horario?> UpdateAsync(Guid id, Horario horario );
+         Task<Horario?> UpdateAsync(Guid id);
 
          Task<Horario?> DeleteAsync(Guid id);
+
+         Task<bool> Exist(Guid id);  
     }
 }
