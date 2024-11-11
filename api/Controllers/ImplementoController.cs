@@ -30,8 +30,10 @@ namespace api.Controllers
         public async Task<IActionResult> GetAll ([FromQuery] QueryObject query)
         {
             var implemento = await _implementoRepository.GetallAsync(query);
+            
+            var implementoDto =  implemento.Select(i => i.ToimplementosDto());
 
-            return Ok(implemento);
+            return Ok(implementoDto);
         }
 
         [HttpGet("ById -implemento{id:guid}")]

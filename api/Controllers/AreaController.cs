@@ -38,9 +38,9 @@ namespace api.Controllers
 
             var areas = await _areaRepository.GetAllAsync(query);
 
-            // var areasdt = areas.Select(a => a);
+            var areasDto = areas.Select(a =>a.ToAreasDto());
                 
-            return Ok(areas);
+            return Ok(areasDto);
         }
 
          [HttpGet("GetById-areas{id:guid}")]

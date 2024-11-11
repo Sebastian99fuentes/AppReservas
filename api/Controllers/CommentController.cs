@@ -50,14 +50,14 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("Create-comments{Id:guid}")]
-        public async Task<IActionResult> Create([FromRoute] Guid Id, CreateUpdateComentRequestDto comenDto )
+        [HttpPost("Create-comments{AoI:guid}")]
+        public async Task<IActionResult> Create([FromRoute] Guid AoI, CreateUpdateComentRequestDto comenDto )
        {
             if (!ModelState.IsValid)
                  return BadRequest(ModelState);
 
-               var areaExists = await _IAreaRepository.Exist(Id);
-                var implementoExists = await _IImplementoRepository.Exist(Id);
+               var areaExists = await _IAreaRepository.Exist(AoI);
+                var implementoExists = await _IImplementoRepository.Exist(AoI);
 
                 // Si el ID no existe en ambos repositorios, devolvemos un error
              if (!areaExists && !implementoExists)
@@ -65,7 +65,7 @@ namespace api.Controllers
 
               // Determinamos el tipo de comentario según si es área o implemento
               var isArea = areaExists;
-              var commentModel = comenDto.ToCommentFromCreate(Id, isArea);
+              var commentModel = comenDto.ToCommentFromCreate(AoI, isArea);
 
              // Creamos el comentario en el repositorio
               await _commentRepository.CreateAsync(commentModel);

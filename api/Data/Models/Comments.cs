@@ -12,10 +12,15 @@ namespace api.Models
           [Key]
         public Guid Id { get; set; } = Guid.NewGuid(); // Esto generará un GUID automáticamente al crear un nuevo registro 
         
-        public string Titulo {get; set; } = string.Empty;
+
         public string Comentario {get; set;}= string.Empty;
         public DateTime CreatedOn {get; set;} = DateTime.Now;
         
+
+        //  // Navigation 
+        // public Guid? UserId {get; set; }     // Navigation 
+        // public AppUser? User {get; set; }
+
         // Navigation 
         public Guid? AreaId {get; set; }     // Navigation 
         public Area? Area {get; set; }

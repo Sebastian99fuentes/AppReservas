@@ -39,8 +39,11 @@ namespace api.Repository
         }
 
         public async Task<Reserva?> GetByIdAsync(Guid id)
-        {
-           return await _context.Reserva.Include(h=>h.Horario).AsQueryable().FirstOrDefaultAsync(x => x.Id== id);
+        { 
+          
+            return await _context.Reserva.Include(h=>h.Horario).AsQueryable().FirstOrDefaultAsync(x => x.Id== id);
+
+          
         }
 
         public Task<bool> Exist(Guid id)

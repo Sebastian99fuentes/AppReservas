@@ -10,6 +10,15 @@ namespace api.Controllers.Mappers
 {
     public static class ImplementoMapper
     {
+        public static ImplementosDto ToimplementosDto(this Implemento implementoModel)
+        {
+            return new ImplementosDto 
+            {
+                Id = implementoModel.Id,
+                NombreImple = implementoModel.NombreImple,
+                Cantidad = implementoModel.Cantidad
+            };
+        } 
         public static ImplementoDto ToImplementoDto (this Implemento implementoModel)
         {
             return new ImplementoDto

@@ -10,6 +10,18 @@ namespace api.Controllers.Mappers
 {
     public static class AreaMappers
     {
+        public static AreasDto ToAreasDto (this Area AreaModel)
+        {
+            return new AreasDto
+            {
+                 Id = AreaModel.Id,
+                Nombre = AreaModel.Nombre,
+                Ubicacion = AreaModel.Ubicacion,
+                Descripcion = AreaModel.Descripcion
+
+            };
+        }
+
         public static AreaDto ToAreaDto (this Area AreaModel)
         {
             return new AreaDto

@@ -8,7 +8,7 @@ namespace api.Repository.Interfaces
 {
     public interface IHorarioRepository
     {
-        Task<List<Horario>> GetAllAsync();
+        Task<List<Horario>> GetAllAsync(Guid id);
 
          Task<Horario?> GetByIdAsync(Guid id); 
 

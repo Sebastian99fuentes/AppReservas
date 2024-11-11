@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    [Route("api/area")]
+    [Route("api/reserva")]
     [ApiController]
     public class ReservaController : ControllerBase
     {
@@ -44,10 +44,10 @@ namespace api.Controllers
             return Ok(reservasDto);
         } 
 
-        [HttpGet("GetById-reserva{Id:guid}")]
-        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        [HttpGet("GetById-reserva/{Id:guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid Id)
         {
-            var reserva = await _reservaRepository.GetByIdAsync(id);
+            var reserva = await _reservaRepository.GetByIdAsync(Id);
             
             if(reserva == null)
             {
@@ -58,7 +58,7 @@ namespace api.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost ("Create-reserva")]
         public async Task<IActionResult> Create(CreateReservaRequestDto reservaDto)
         {
 

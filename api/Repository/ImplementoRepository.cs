@@ -22,7 +22,7 @@ namespace api.Repository
         }
         public async Task<List<Implemento>> GetallAsync(QueryObject query)
         {
-             var implementos = _context.Implemento.Include(c =>c.Comments).AsQueryable();
+             var implementos = _context.Implemento.AsQueryable();
 
              if(!string.IsNullOrWhiteSpace(query.ImplementoNombre))
              {

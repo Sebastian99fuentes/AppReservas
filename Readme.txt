@@ -24,4 +24,9 @@ Microsoft.AspNetCore.Identity.EntityFrameworkCore  version '8.0.8'
 Microsoft.AspNetCore.Authentication.JwtBearer  version '8.0.8' 
 Formato de Fecha es UTC ISO 8601  
 
-Sin conflictos entre entidades: Al tener IDs únicos, no tendrás problemas de colisiones entre áreas, implementos y comentarios. UUIDs en lugar de IDs 
+Sin conflictos entre entidades: Al tener IDs únicos, no tendrás problemas de colisiones entre áreas, implementos y comentarios. UUIDs en lugar de IDs  
+
+9/11  Lo  que faltaria es ver si podemos implimentar una imagen para los items y hacer que todos los horarios  creados al llegar domingo se reseteen y vuelvan a cambiar de estado
+
+
+tenemos que arreglar lo de los horarios para que en el getall sean los horarios de ese implemento o area

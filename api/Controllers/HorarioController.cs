@@ -25,12 +25,12 @@ namespace api.Controllers
             _IImplementoRepository = implementoRepository;
         } 
 
-        [HttpGet("GetAll-horario")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("GetAll-horarios{AoI:guid}")]
+        public async Task<IActionResult> GetAll([FromRoute] Guid AoI)
         {
-            var horarios = await _IHorarioRepository.GetAllAsync();
+            var horarios = await _IHorarioRepository.GetAllAsync(AoI);
             
-            var horarioDto = horarios.Select(c => c.ToHorarioDto());
+            var horarioDto = horarios.Where(x => x.Disponible == true).Select(c => c.ToHorarioDto());
 
             return Ok(horarioDto);
 
@@ -50,8 +50,8 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("Create-horario{AreaId:guid}")]
-        public async Task<IActionResult> Create([FromRoute] Guid AreaId, CreateHorarioRequestDto horarioDto)
+        [HttpPost("Create-horario{AoI:guid}")]
+        public async Task<IActionResult> Create([FromRoute] Guid AoI, CreateHorarioRequestDto horarioDto)
         {
             
             if(!ModelState.IsValid)
@@ -59,18 +59,18 @@ namespace api.Controllers
 
             if(horarioDto.EsImplemento)
             {
-                if(!await _IImplementoRepository.Exist(AreaId))
+                if(!await _IImplementoRepository.Exist(AoI))
                     return BadRequest("Implemento no existe");
 
             } 
             else
             {
-                 if(!await _IAreaRepository.Exist(AreaId))
+                 if(!await _IAreaRepository.Exist(AoI))
                      return BadRequest("Area no existe"); 
 
             }        
             
-            var horarioModel = horarioDto.ToHorarioFromCreate(AreaId,horarioDto.EsImplemento);
+            var horarioModel = horarioDto.ToHorarioFromCreate(AoI,horarioDto.EsImplemento);
 
             await _IHorarioRepository.CreateAsync(horarioModel);
 

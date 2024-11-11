@@ -44,7 +44,7 @@ namespace api.Repository
             return _context.Horario.AnyAsync(h =>h.Id == id);
         }
 
-        public async Task<List<Horario>> GetAllAsync()
+        public async Task<List<Horario>> GetAllAsync(Guid id)
         {
             return await _context.Horario.ToListAsync();
         }

@@ -15,7 +15,7 @@ public class Horario
 
     public int Dia { get; set; }  // Día específico.
 
-    public int Hora { get; set; }  // Hora específica (para áreas).
+    public int? Hora { get; set; }  // Hora específica (para áreas).
 
     public bool Disponible { get; set; }  // Indica si el horario está libre.
 

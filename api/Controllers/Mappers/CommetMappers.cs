@@ -16,8 +16,6 @@ namespace api.Controllers.Mappers
             {
                 Id = commentModel.Id,
                 
-                Titulo = commentModel.Titulo,
-                
                 Comentario = commentModel.Comentario,
                 
                 CreatedOn = commentModel.CreatedOn,
@@ -40,7 +38,6 @@ namespace api.Controllers.Mappers
              // Inicializamos el comentario con las propiedades comunes
              var comment = new Comments
                  {
-                      Titulo = commentModel.Titulo,
                        Comentario = commentModel.Comentario,
                   };
 
