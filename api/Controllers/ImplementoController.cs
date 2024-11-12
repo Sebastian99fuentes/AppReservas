@@ -27,9 +27,9 @@ namespace api.Controllers
         }
 
         [HttpGet ("GetAll-implemento")]
-        public async Task<IActionResult> GetAll ([FromQuery] QueryObject query)
+        public async Task<IActionResult> GetAll ()
         {
-            var implemento = await _implementoRepository.GetallAsync(query);
+            var implemento = await _implementoRepository.GetallAsync();
             
             var implementoDto =  implemento.Select(i => i.ToimplementosDto());
 
@@ -78,6 +78,24 @@ namespace api.Controllers
                     }
 
                     return Ok(Implemento);
+        } 
+
+         [HttpPut]
+        [Route("Update-implementoCantidad{id:guid}")]
+
+        public async Task<IActionResult> UpdateCantidad ([FromRoute] Guid id, [FromBody] UpdateImpleCantidadDto Updown)
+        {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState); 
+
+                    var implementoModel = await _implementoRepository.UpdateImpleAsync(id,Updown.UpDown);
+                    
+                    if(implementoModel == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(implementoModel);
         } 
 
 

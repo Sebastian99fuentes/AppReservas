@@ -10,13 +10,15 @@ namespace api.Repository.Interfaces
 {
     public interface IImplementosRepository
     {
-        Task <List<Implemento>>  GetallAsync(QueryObject query); 
+        Task <List<Implemento>>  GetallAsync(); 
 
         Task<Implemento?> GetByIdAsync(Guid id);
 
         Task <Implemento?> CreateAsync(Implemento implemento);
 
         Task <Implemento?> UpdateAsync(Guid id, CreateImplementoRequestDto implementoDto);
+
+        Task <Implemento?> UpdateImpleAsync(Guid? id, bool upDown);
 
         Task<Implemento?> DeleteAsync(Guid id);
         Task<bool> Exist(Guid id);  

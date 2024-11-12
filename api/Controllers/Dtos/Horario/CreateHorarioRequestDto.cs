@@ -10,10 +10,12 @@ namespace api.Controllers.Dtos.Horario
     public class CreateHorarioRequestDto
     {
 
-        [Required]
+        [Required] 
+          [Range(0,10,ErrorMessage ="DE 0 A 7")]
         public int Dia { get; set; }  // Día específico.
 
-        [Required]
+        [Required] 
+          [Range(8,22,ErrorMessage ="DE 8 A 22")]
         public int Hora { get; set; }  // Hora específica (para áreas).
 
          [Required]

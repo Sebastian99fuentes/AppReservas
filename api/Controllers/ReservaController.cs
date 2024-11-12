@@ -18,10 +18,13 @@ namespace api.Controllers
         private readonly IReservasRepository _reservaRepository;
 
         private readonly IHorarioRepository _horarioRepository;
-        public ReservaController(IReservasRepository reservaRepository, IHorarioRepository horarioRepository)
+
+        private readonly IImplementosRepository _implementoRepository;
+        public ReservaController(IReservasRepository reservaRepository, IHorarioRepository horarioRepository, IImplementosRepository implementosRepository)
         {
             _reservaRepository =  reservaRepository;
             _horarioRepository = horarioRepository;
+            _implementoRepository = implementosRepository;
         } 
 
         [HttpGet("all-reserva/{id:guid}")]
@@ -78,8 +81,9 @@ namespace api.Controllers
 
             await  _reservaRepository.CreateAsync(reservaModel); 
      
-            await _horarioRepository.UpdateAsync(horario.Id);
+            await _horarioRepository.UpdateAsync(horario.Id); 
 
+            await _implementoRepository.UpdateImpleAsync(horario.ImplementoId, false);
 
             return CreatedAtAction(nameof(GetById), new{id = reservaModel.Id}, reservaModel);
         } 
@@ -107,7 +111,8 @@ namespace api.Controllers
                 return NotFound("Horario no existe");
             }
 
-         
+             await _implementoRepository.UpdateImpleAsync(horario.ImplementoId, true);
+
             return Ok();
         }
 

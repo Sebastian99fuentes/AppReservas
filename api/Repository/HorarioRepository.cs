@@ -39,9 +39,9 @@ namespace api.Repository
 
         }
 
-        public Task<bool> Exist(Guid id)
+        public  async Task<bool> Exist(Guid id)
         {
-            return _context.Horario.AnyAsync(h =>h.Id == id);
+            return await _context.Horario.AnyAsync(h =>h.Id == id);
         }
 
         public async Task<List<Horario>> GetAllAsync(Guid id)
@@ -61,17 +61,34 @@ namespace api.Repository
            {
             return null;
            }
-            
-            if(existehorario.Disponible == true)
+            if(existehorario.AreaId.HasValue)
+            { 
+                  if(existehorario.Disponible == true)
+                    {
+                       existehorario.Disponible = false; 
+                    }  
+                 else
+                    {
+                       existehorario.Disponible = true; 
+                    }
+            } 
+            if(existehorario.ImplementoId.HasValue)
             {
-                existehorario.Disponible = false; 
-
-            }  
-            else
-            {
-                 existehorario.Disponible = true; 
+                var implemento = await _context.Implemento.FirstOrDefaultAsync( i => i.Id == existehorario.ImplementoId);
+                 
+                 if(implemento == null)
+                 {
+                    return null;
+                 }
+                 if(implemento.Cantidad <= 0)
+                 {
+                    existehorario.Disponible = false;  
+                 }
+                  if(implemento.Cantidad >= 0)
+                 {
+                    existehorario.Disponible = true;  
+                 }
             }
-
          
             await _context.SaveChangesAsync();
 

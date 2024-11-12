@@ -20,23 +20,25 @@ namespace api.Repository
         {
             _context = context;
         }
-        public async Task<List<Implemento>> GetallAsync(QueryObject query)
+        public async Task<List<Implemento>> GetallAsync()
         {
              var implementos = _context.Implemento.AsQueryable();
 
-             if(!string.IsNullOrWhiteSpace(query.ImplementoNombre))
-             {
-                implementos = implementos.Where( i=> i.NombreImple ==query.ImplementoNombre);
-             }
-               else
-            {
-                // Orden por defecto para evitar advertencias de EF Core
-              implementos = implementos.OrderBy(a => a.Id); // Asumiendo que 'Id' es una clave única
-            } 
+            //  if(!string.IsNullOrWhiteSpace(query.ImplementoNombre))
+            //  {
+            //     implementos = implementos.Where( i=> i.NombreImple ==query.ImplementoNombre);
+            //  }
+            //    else
+            // {
+            //     // Orden por defecto para evitar advertencias de EF Core
+            //   implementos = implementos.OrderBy(a => a.Id); // Asumiendo que 'Id' es una clave única
+            // } 
 
-                        var skipNumber = (query.PageNumber-1) * query.PageSize;
+            //             var skipNumber = (query.PageNumber-1) * query.PageSize;
 
-            return  await  implementos.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            // return  await  implementos.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+
+             return  await  implementos.ToListAsync();
 
         } 
 
@@ -86,6 +88,28 @@ namespace api.Repository
         public Task<bool> Exist(Guid id)
         {
              return _context.Implemento.AnyAsync(a => a.Id ==id);
+        }
+
+        public async Task<Implemento?> UpdateImpleAsync(Guid? id, bool upDown)
+        {
+            var existingImplemento = await _context.Implemento.FirstOrDefaultAsync(i => i.Id == id);
+               if(existingImplemento == null)
+                {
+                    return null;
+                }
+                if(upDown)
+                {       
+                    existingImplemento.Cantidad++;
+                } 
+                else
+                {
+                    existingImplemento.Cantidad--;
+                }
+            
+
+                await _context.SaveChangesAsync();
+
+               return existingImplemento; 
         }
     }
 }
