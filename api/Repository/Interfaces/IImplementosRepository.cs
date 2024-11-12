@@ -10,7 +10,7 @@ namespace api.Repository.Interfaces
 {
     public interface IImplementosRepository
     {
-        Task <List<Implemento>>  GetallAsync(QueryObject query); 
+        Task <List<Implemento>>  GetallAsync(); 
 
         Task<Implemento?> GetByIdAsync(Guid id);
 

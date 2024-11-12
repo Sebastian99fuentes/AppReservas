@@ -18,6 +18,7 @@ namespace api.Controllers
          private readonly IHorarioRepository _IHorarioRepository;
          private readonly IAreaRepository _IAreaRepository;
          private readonly IImplementosRepository _IImplementoRepository;
+
         public HorarioController(  IHorarioRepository horarioRepository, IAreaRepository areaRepository, IImplementosRepository implementoRepository)
         {
             _IHorarioRepository = horarioRepository;
@@ -25,18 +26,18 @@ namespace api.Controllers
             _IImplementoRepository = implementoRepository;
         } 
 
-        [HttpGet("GetAll-horarios{AoI:guid}")]
-        public async Task<IActionResult> GetAll([FromRoute] Guid AoI)
+        [HttpGet("por-area-o-implemento/{AreaOImplementoId:guid}")]
+        public async Task<IActionResult> GetAll([FromRoute] Guid AreaOImplementoId)
         {
-            var horarios = await _IHorarioRepository.GetAllAsync(AoI);
+            var horarios = await _IHorarioRepository.GetAllAsync(AreaOImplementoId);
             
-            var horarioDto = horarios.Where(x => x.Disponible == true).Select(c => c.ToHorarioDto());
-
+             var horarioDto = horarios.Where(x => x.Disponible == true).Select(c => c.ToHorarioDto());
+ 
             return Ok(horarioDto);
 
         }
 
-        [HttpGet("GetById-horario{id:guid}")]
+         [HttpGet("horariosById/{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var horarios = await _IHorarioRepository.GetByIdAsync(id);
@@ -50,31 +51,52 @@ namespace api.Controllers
 
         }
 
-        [HttpPost("Create-horario{AoI:guid}")]
-        public async Task<IActionResult> Create([FromRoute] Guid AoI, CreateHorarioRequestDto horarioDto)
+        [HttpPost("Create-horario/{AreaOImplementoId:guid}")]
+        public async Task<IActionResult> Create([FromRoute] Guid AreaOImplementoId, CreateHorarioRequestDto horarioDto)
         {
             
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            if (horarioDto.Dia < 0 || horarioDto.Dia > 7)
+                 return BadRequest("El día debe estar en el rango de 0 a 7.");
+
             if(horarioDto.EsImplemento)
             {
-                if(!await _IImplementoRepository.Exist(AoI))
+                if(!await _IImplementoRepository.Exist(AreaOImplementoId))
                     return BadRequest("Implemento no existe");
 
             } 
             else
             {
-                 if(!await _IAreaRepository.Exist(AoI))
+                 if(!await _IAreaRepository.Exist(AreaOImplementoId))
                      return BadRequest("Area no existe"); 
+
+                 if (horarioDto.Hora < 8 || horarioDto.Hora > 20)
+                  return BadRequest("La hora debe estar en el rango de 8:00 a 20:00.");    
 
             }        
             
-            var horarioModel = horarioDto.ToHorarioFromCreate(AoI,horarioDto.EsImplemento);
+            var horariosCreados = await _IHorarioRepository.GetAllAsync(AreaOImplementoId);
+
+            bool horarioExiste = horariosCreados.Any(h => h.Hora ==horarioDto.Hora && h.Dia == horarioDto.Dia);
+
+            if(horarioExiste)
+                return BadRequest("el horario ya existe");
+            try
+            {
+             var horarioModel = horarioDto.ToHorarioFromCreate(AreaOImplementoId,horarioDto.EsImplemento);
 
             await _IHorarioRepository.CreateAsync(horarioModel);
 
             return CreatedAtAction(nameof(GetById), new { id = horarioModel.Id }, horarioModel.ToHorarioDto());
+
+            }
+            catch(Exception e)
+            {
+                 return StatusCode(500, $"Error al crear el horario: {e.Message}");
+            }
+           
         }
 
 
@@ -88,9 +110,19 @@ namespace api.Controllers
               if (horario == null)
                    return NotFound("El horario no existe");
 
-              var updatedHorario = await _IHorarioRepository.UpdateAsync(id);
-  
+            var updatedHorario = await _IHorarioRepository.UpdateAsync(id);
 
+
+            // if (updatedHorario.ImplementoId.HasValue)
+            // {
+            //     Guid implementoId = updatedHorario.ImplementoId.Value;
+            //     await _IImplementoRepository.UpdateAsync(implementoId);
+            // }
+            // else
+            // {
+            //     return BadRequest("ImplementoId no puede ser nulo.");
+            // }
+             
                 if (updatedHorario == null)
                      return StatusCode(500, "No se pudo actualizar el horario"); 
 

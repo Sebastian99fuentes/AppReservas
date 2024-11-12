@@ -46,7 +46,7 @@ namespace api.Repository
 
         public async Task<List<Horario>> GetAllAsync(Guid id)
         {
-            return await _context.Horario.ToListAsync();
+            return await _context.Horario.Where(h => h.AreaId == id || h.ImplementoId == id).ToListAsync();
         }
 
         public async Task<Horario?> GetByIdAsync(Guid id)
@@ -65,7 +65,7 @@ namespace api.Repository
             if(existehorario.Disponible == true)
             {
                 existehorario.Disponible = false; 
-
+                
             }  
             else
             {

@@ -27,9 +27,9 @@ namespace api.Controllers
         }
 
         [HttpGet ("GetAll-implemento")]
-        public async Task<IActionResult> GetAll ([FromQuery] QueryObject query)
+        public async Task<IActionResult> GetAll ()
         {
-            var implemento = await _implementoRepository.GetallAsync(query);
+            var implemento = await _implementoRepository.GetallAsync();
             
             var implementoDto =  implemento.Select(i => i.ToimplementosDto());
 

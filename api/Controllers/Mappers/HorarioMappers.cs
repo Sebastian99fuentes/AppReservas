@@ -19,12 +19,13 @@ namespace api.Controllers.Mappers
         {
            Id = horarioModel.Id,
            Dia = horarioModel.Dia,
-           Hora = horarioModel.Hora,
+          
            Disponible = horarioModel.Disponible
         }; 
 
         if( horarioModel.AreaId.HasValue)
         {
+            Horario.Hora = horarioModel.Hora;
             Horario.AreaId = horarioModel.AreaId;
         }
         else if(horarioModel.ImplementoId.HasValue)
@@ -44,10 +45,10 @@ namespace api.Controllers.Mappers
                    return new Horario
                    {
                        Dia = horarioModel.Dia,
-                       Hora = horarioModel.Hora,
+                   
                        Disponible = true,  // Asumimos que es libre por defecto.
                        ImplementoId = areaImplementoId,
-                        AreaId = null  // No tiene área si es implemento.
+                
                     };
                }
                  else
@@ -58,7 +59,7 @@ namespace api.Controllers.Mappers
                         Hora = horarioModel.Hora,
                         Disponible = true,
                         AreaId = areaImplementoId,
-                        ImplementoId = null  // No tiene implemento si es un área.
+                      
                    };
                }
         }

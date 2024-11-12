@@ -20,23 +20,9 @@ namespace api.Repository
         {
             _context = context;
         }
-        public async Task<List<Implemento>> GetallAsync(QueryObject query)
+        public async Task<List<Implemento>> GetallAsync()
         {
-             var implementos = _context.Implemento.AsQueryable();
-
-             if(!string.IsNullOrWhiteSpace(query.ImplementoNombre))
-             {
-                implementos = implementos.Where( i=> i.NombreImple ==query.ImplementoNombre);
-             }
-               else
-            {
-                // Orden por defecto para evitar advertencias de EF Core
-              implementos = implementos.OrderBy(a => a.Id); // Asumiendo que 'Id' es una clave única
-            } 
-
-                        var skipNumber = (query.PageNumber-1) * query.PageSize;
-
-            return  await  implementos.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+             return await _context.Implemento.ToListAsync();
 
         } 
 

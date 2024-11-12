@@ -24,10 +24,10 @@ namespace api.Controllers
             _horarioRepository = horarioRepository;
         } 
 
-        [HttpGet("all-reserva/{id:guid}")]
-        public async Task<IActionResult> GetAll([FromRoute] Guid id)
+        [HttpGet("all-reservaUserApp/{idUser:guid}")]
+        public async Task<IActionResult> GetAll([FromRoute] Guid idUser)
         {
-            var reserva = await _reservaRepository.GetAllAsync(id);
+            var reserva = await _reservaRepository.GetAllAsync(idUser);
 
             if(reserva == null)
             {
@@ -44,10 +44,10 @@ namespace api.Controllers
             return Ok(reservasDto);
         } 
 
-        [HttpGet("GetById-reserva/{Id:guid}")]
-        public async Task<IActionResult> GetById([FromRoute] Guid Id)
+        [HttpGet("GetById-reserva/{IdReserva:guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid IdReserva)
         {
-            var reserva = await _reservaRepository.GetByIdAsync(Id);
+            var reserva = await _reservaRepository.GetByIdAsync(IdReserva);
             
             if(reserva == null)
             {
@@ -85,10 +85,10 @@ namespace api.Controllers
         } 
 
         [HttpDelete]
-        [Route("delete-reserva/{id:guid}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        [Route("delete-reserva/{IdReserva:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid IdReserva)
         {
-            var  reserva = await _reservaRepository.GetByIdAsync(id);
+            var  reserva = await _reservaRepository.GetByIdAsync(IdReserva);
              if(reserva == null)
             {
                 return NotFound();
@@ -100,7 +100,7 @@ namespace api.Controllers
 
              await _horarioRepository.UpdateAsync(horario.Id);
 
-            var reservaModel = await _reservaRepository.DeleteAsync(id);
+            var reservaModel = await _reservaRepository.DeleteAsync(IdReserva);
 
             if(reservaModel == null)
             {

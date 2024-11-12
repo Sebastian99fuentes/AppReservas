@@ -50,13 +50,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1c1a91c4-fe61-4eb2-ba5d-1fcb46041282",
+                            Id = "34cf70ab-0c6a-417f-b784-5e3f809db30f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d5c03c04-aa3a-4918-b3ff-a5ab7be85f3c",
+                            Id = "88930101-3a59-4dfb-a329-a5fa6f12aecd",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -247,7 +247,7 @@ namespace api.Migrations
                     b.Property<bool>("Disponible")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("Hora")
+                    b.Property<int?>("Hora")
                         .HasColumnType("integer");
 
                     b.Property<Guid?>("ImplementoId")
@@ -345,10 +345,6 @@ namespace api.Migrations
 
                     b.Property<Guid?>("ImplementoId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
